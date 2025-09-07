@@ -289,3 +289,9 @@ class Paquete {
         System.out.println("ID: " + id + " | Destinatario: " + destinatario + " | Fecha: " + fechaIngreso);
     }
 }
+public class Main {
+    public static void main(String[] args) {
+        SistemaCasilleros sistema = new SistemaCasilleros();
+        sistema.ejecutar();
+    }
+}
