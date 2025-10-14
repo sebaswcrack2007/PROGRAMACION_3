@@ -41,18 +41,23 @@ public class ExamenPilaMapa {
 
     // (50 pts ) Verifica si los parentesis estan balanceados .
     public static boolean esBalanceado(String s) {
-        PilaEnteros pila = new PilaEnteros(s.length()); // Crea una pila del tamaño de la cadena
+        // Crea una pila del tamaño de la cadena
+        PilaEnteros pila = new PilaEnteros(s.length());
 
         for (int i = 0; i < s.length(); i++) {
-            char simbolo = s.charAt(i); // Toma cada carácter
+            // Toma cada carácter
+            char simbolo = s.charAt(i);
 
             if (simbolo == '(') {
-                pila.apilar(1); // Abre paréntesis, significa que apila
+                // Abre paréntesis, significa que apila
+                pila.apilar(1);
             } else if (simbolo == ')') {
                 if (pila.estaVacia()) {
-                    return false; // Hay un cierre sin apertura
+                    // Hay un cierre sin apertura
+                    return false;
                 }
-                pila.desapilar(); // Cierra un paréntesis, significa que desapila
+                // Cierra un paréntesis, significa que desapila
+                pila.desapilar();
             }
         }
 
@@ -66,10 +71,13 @@ public class ExamenPilaMapa {
     public static boolean actualizarCalificacion(Map<Integer, Integer> califPorId, int id, int nuevo) {
         // Verifica si el id existe y si tiene un rango válido
         if (califPorId.containsKey(id) && nuevo >= 0 && nuevo <= 100) {
-            califPorId.put(id, nuevo); // Actualiza la nota
-            return true; // Actualización exitosa
+            // Se actualiza la nota
+            califPorId.put(id, nuevo);
+            // Se realiza la actualizacion correctamente
+            return true;
         }
-        return false; // No cumple condiciones
+        // Cuando no se cumplen las condiciones
+        return false;
     }
 
     public static void main(String[] args) {
