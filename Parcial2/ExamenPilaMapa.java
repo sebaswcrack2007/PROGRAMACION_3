@@ -74,12 +74,16 @@ public class ExamenPilaMapa {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("Ingrese una cadena con paréntesis:");
         String cadena = sc.nextLine();
-        System.out.println(" Balanceado : " + esBalanceado(cadena));
+
+        System.out.println("Balanceado: " + esBalanceado(cadena));
 
         Map<Integer, Integer> mapa = new HashMap<Integer, Integer>();
         mapa.put(101, 70);
-        System.out.println(" Actualizado : " + actualizarCalificacion(mapa, 101, 95));
+
+        System.out.println("Actualizado: " + actualizarCalificacion(mapa, 101, 95));
 
         sc.close();
     }
