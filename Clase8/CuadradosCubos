@@ -1,0 +1,12 @@
+public static String sociedadSecreta(String[] nombres) {
+        char[] letras = new char[nombres.length];
+        for (int i = 0; i < nombres.length; i++) {
+            letras[i] = Character.toUpperCase(nombres[i].charAt(0));
+        }
+        java.util.Arrays.sort(letras);
+        return new String(letras);
+    }
+
+    System.out.println(sociedadSecreta(new String[]{"Adam", "Sarah", "Malcolm"})); // AMS
+    System.out.println(sociedadSecreta(new String[]{"bruce", "clark", "diana"})); // BCD
+    System.out.println(sociedadSecreta(new String[]{"Zoe", "anna", "leo"})); // ALZ
