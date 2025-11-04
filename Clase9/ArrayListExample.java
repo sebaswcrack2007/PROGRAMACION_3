@@ -1,115 +1,115 @@
 package Clase9;
 
 import java.util.*;
-import java.io.*;
 
 public class ArrayListExample {
-    public static void main(String args[]) throws IOException {
-        ArrayList<String> obj = new ArrayList<>();
+
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int c, ch;
-        String str;
+        ArrayList<String> lista = new ArrayList<>();
+        int opcion;
 
         do {
-            System.out.println("\nMANIPULACION DE CADENAS");
-            System.out.println("************************");
-            System.out.println("1. Adicionar al final");
-            System.out.println("2. Insertar en una posicion particular");
-            System.out.println("3. Buscar");
-            System.out.println("4. Listar las cadenas que comienzan con una letra");
-            System.out.println("5. Tamaño");
-            System.out.println("6. Remover");
-            System.out.println("7. Ordenar");
-            System.out.println("8. Mostrar");
-            System.out.println("Ingrese la opcion:");
-            c = Integer.parseInt(in.next());
+            System.out.println("\n=== MANIPULACIÓN DE CADENAS ===");
+            System.out.println("1. Agregar cadena al final");
+            System.out.println("2. Insertar cadena en una posición");
+            System.out.println("3. Buscar una cadena");
+            System.out.println("4. Listar cadenas que comienzan con una letra");
+            System.out.println("5. Mostrar tamaño de la lista");
+            System.out.println("6. Eliminar una cadena");
+            System.out.println("7. Ordenar la lista");
+            System.out.println("8. Mostrar todas las cadenas");
+            System.out.println("0. Salir");
+            System.out.print("Elija una opción: ");
 
-            switch (c) {
-                case 1: {
-                    System.out.println("Digite la cadena:");
-                    str = in.next();
-                    obj.add(str);
-                    break;
+            opcion = in.nextInt();
+            in.nextLine(); // limpiar buffer
+
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Ingrese la cadena: ");
+                    String cadena = in.nextLine();
+                    lista.add(cadena);
+                    System.out.println("Cadena agregada correctamente.");
                 }
 
-                case 2: {
-                    System.out.println("Digite la cadena que desea insertar:");
-                    String nuevaCadena = in.next();
-                    System.out.println("Digite la posicion:");
-                    int posicion = Integer.parseInt(in.next());
-                    if (posicion >= 0 && posicion <= obj.size()) {
-                        obj.add(posicion, nuevaCadena);
+                case 2 -> {
+                    System.out.print("Ingrese la cadena a insertar: ");
+                    String cadena = in.nextLine();
+                    System.out.print("Ingrese la posición (0 a " + lista.size() + "): ");
+                    int posicion = in.nextInt();
+
+                    if (posicion >= 0 && posicion <= lista.size()) {
+                        lista.add(posicion, cadena);
                         System.out.println("Cadena insertada correctamente.");
                     } else {
-                        System.out.println("Posicion invalida.");
+                        System.out.println("Posición inválida.");
                     }
-                    break;
                 }
 
-                case 3: {
-                    System.out.println("Digite la cadena a buscar:");
-                    String buscar = in.next();
-                    if (obj.contains(buscar)) {
-                        System.out.println("La cadena '" + buscar + "' se encuentra en la lista.");
+                case 3 -> {
+                    System.out.print("Ingrese la cadena a buscar: ");
+                    String buscar = in.nextLine();
+                    if (lista.contains(buscar)) {
+                        System.out.println("La cadena \"" + buscar + "\" se encuentra en la lista.");
                     } else {
                         System.out.println("La cadena no fue encontrada.");
                     }
-                    break;
                 }
 
-                case 4: {
-                    System.out.println("Digite la letra inicial:");
+                case 4 -> {
+                    System.out.print("Ingrese la letra inicial: ");
                     char letra = in.next().charAt(0);
                     System.out.println("Cadenas que comienzan con '" + letra + "':");
-                    for (String s : obj) {
-                        if (s.charAt(0) == letra) {
-                            System.out.println(s);
+                    boolean encontrada = false;
+
+                    for (String s : lista) {
+                        if (!s.isEmpty() && Character.toLowerCase(s.charAt(0)) == Character.toLowerCase(letra)) {
+                            System.out.println("- " + s);
+                            encontrada = true;
                         }
                     }
-                    break;
+
+                    if (!encontrada) {
+                        System.out.println("Ninguna cadena comienza con esa letra.");
+                    }
                 }
 
-                case 5: {
-                    System.out.println("Tamaño de la lista: " + obj.size());
-                    break;
-                }
+                case 5 -> System.out.println("La lista tiene " + lista.size() + " elementos.");
 
-                case 6: {
-                    System.out.println("Digite la cadena a remover:");
-                    String eliminar = in.next();
-                    if (obj.remove(eliminar)) {
+                case 6 -> {
+                    System.out.print("Ingrese la cadena a eliminar: ");
+                    String eliminar = in.nextLine();
+                    if (lista.remove(eliminar)) {
                         System.out.println("Cadena eliminada correctamente.");
                     } else {
-                        System.out.println("No se encontró la cadena.");
+                        System.out.println("La cadena no se encontró.");
                     }
-                    break;
                 }
 
-                case 7: {
-                    Collections.sort(obj);
-                    System.out.println("Lista ordenada correctamente.");
-                    break;
+                case 7 -> {
+                    Collections.sort(lista);
+                    System.out.println("Lista ordenada alfabéticamente.");
                 }
 
-                case 8: {
-                    System.out.println("Contenido de la lista:");
-                    for (String s : obj) {
-                        System.out.println(s);
+                case 8 -> {
+                    if (lista.isEmpty()) {
+                        System.out.println("La lista está vacía.");
+                    } else {
+                        System.out.println("Contenido actual de la lista:");
+                        for (String s : lista) {
+                            System.out.println("- " + s);
+                        }
                     }
-                    break;
                 }
 
-                default: {
-                    System.out.println("Opción inválida.");
-                    break;
-                }
+                case 0 -> System.out.println("Programa finalizado.");
+
+                default -> System.out.println("Opción inválida. Intente de nuevo.");
             }
 
-            System.out.println("\nIngrese 0 para salir, 1 para continuar:");
-            ch = Integer.parseInt(in.next());
-        } while (ch == 1);
+        } while (opcion != 0);
 
-        System.out.println("Programa finalizado.");
         in.close();
     }
 }
