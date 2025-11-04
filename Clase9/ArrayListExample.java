@@ -21,7 +21,7 @@ public class ArrayListExample {
             System.out.println("6. Remover");
             System.out.println("7. Ordenar");
             System.out.println("8. Mostrar");
-            System.out.println("Ingrese la opcion");
+            System.out.println("Ingrese la opcion");
             c = Integer.parseInt(in.next());
             switch (c) {
                 case 1: {
@@ -68,4 +68,5 @@ public class ArrayListExample {
         }
         while (ch == 1);
     }
+}
 }

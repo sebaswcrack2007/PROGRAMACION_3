@@ -1,85 +1,109 @@
 import java.util.Random;
 
-public class ArbolBinario {
+class ArbolBinario {
+    private Nodo raiz;
+    private Random random = new Random();
 
-    static class Nodo {
-        int valor;
-        Nodo izq, der;
-    }
-
-    static Nodo nuevoNodo(int valor) {
-        Nodo n = new Nodo();
-        n.valor = valor;
-        return n;
-    }
-
-    static Nodo insertar(Nodo raiz, int valor) {
-        if (raiz == null) return nuevoNodo(valor);
-        if (valor < raiz.valor)
-            raiz.izq = insertar(raiz.izq, valor);
-        else
-            raiz.der = insertar(raiz.der, valor);
-        return raiz;
-    }
-
-    static void preOrden(Nodo n) {
-        if (n != null) {
-            System.out.print(n.valor + " ");
-            preOrden(n.izq);
-            preOrden(n.der);
-        }
-    }
-
-    static void inOrden(Nodo n) {
-        if (n != null) {
-            inOrden(n.izq);
-            System.out.print(n.valor + " ");
-            inOrden(n.der);
-        }
-    }
-
-    static void postOrden(Nodo n) {
-        if (n != null) {
-            postOrden(n.izq);
-            postOrden(n.der);
-            System.out.print(n.valor + " ");
-        }
-    }
-
-    static int altura(Nodo n) {
-        if (n == null) return 0;
-        return 1 + Math.max(altura(n.izq), altura(n.der));
-    }
-
-    static boolean estaBalanceado(Nodo n) {
-        if (n == null) return true;
-        int altIzq = altura(n.izq);
-        int altDer = altura(n.der);
-        if (Math.abs(altIzq - altDer) > 1) return false;
-        return estaBalanceado(n.izq) && estaBalanceado(n.der);
-    }
-
-    public static void main(String[] args) {
-        Random random = new Random();
-        Nodo raiz = null;
-
-        for (int i = 0; i < 10; i++) {
+    public void generarArbolAleatorio(int n) {
+        for (int i = 0; i < n; i++) {
             int valor = random.nextInt(100);
             raiz = insertar(raiz, valor);
         }
+    }
 
-        System.out.println("Recorrido en preorden:");
-        preOrden(raiz);
-
-        System.out.println("\nRecorrido en inorden:");
-        inOrden(raiz);
-
-        System.out.println("\nRecorrido en postorden:");
-        postOrden(raiz);
-
-        if (estaBalanceado(raiz))
-            System.out.println("\n\nEl árbol está balanceado");
+    private Nodo insertar(Nodo actual, int valor) {
+        if (actual == null)
+            return new Nodo(valor);
+        if (valor < actual.valor)
+            actual.izquierdo = insertar(actual.izquierdo, valor);
         else
-            System.out.println("\n\nEl árbol no está balanceado");
+            actual.derecho = insertar(actual.derecho, valor);
+        return actual;
+    }
+
+    public void preOrden() {
+        preOrden(raiz);
+        System.out.println();
+    }
+
+    private void preOrden(Nodo n) {
+        if (n != null) {
+            System.out.print(n.valor + " ");
+            preOrden(n.izquierdo);
+            preOrden(n.derecho);
+        }
+    }
+
+    public void inOrden() {
+        inOrden(raiz);
+        System.out.println();
+    }
+
+    private void inOrden(Nodo n) {
+        if (n != null) {
+            inOrden(n.izquierdo);
+            System.out.print(n.valor + " ");
+            inOrden(n.derecho);
+        }
+    }
+
+    public void postOrden() {
+        postOrden(raiz);
+        System.out.println();
+    }
+
+    private void postOrden(Nodo n) {
+        if (n != null) {
+            postOrden(n.izquierdo);
+            postOrden(n.derecho);
+            System.out.print(n.valor + " ");
+        }
+    }
+
+    private int altura(Nodo n) {
+        if (n == null)
+            return 0;
+        return 1 + Math.max(altura(n.izquierdo), altura(n.derecho));
+    }
+
+    private int contarNodosEnNivel(Nodo n, int nivel) {
+        if (n == null)
+            return 0;
+        if (nivel == 1)
+            return 1;
+        return contarNodosEnNivel(n.izquierdo, nivel - 1) + contarNodosEnNivel(n.derecho, nivel - 1);
+    }
+
+    private int ancho(Nodo n) {
+        int h = altura(n);
+        int maxAncho = 0;
+        for (int i = 1; i <= h; i++) {
+            int anchoNivel = contarNodosEnNivel(n, i);
+            if (anchoNivel > maxAncho)
+                maxAncho = anchoNivel;
+        }
+        return maxAncho;
+    }
+
+    public boolean estaBalanceado() {
+        return estaBalanceado(raiz);
+    }
+
+    private boolean estaBalanceado(Nodo n) {
+        if (n == null)
+            return true;
+        int altIzq = altura(n.izquierdo);
+        int altDer = altura(n.derecho);
+        if (Math.abs(altIzq - altDer) > 1)
+            return false;
+        return estaBalanceado(n.izquierdo) && estaBalanceado(n.derecho);
+    }
+
+    public int getAltura() {
+        return altura(raiz);
+    }
+
+    public int getAncho() {
+        return ancho(raiz);
     }
 }
