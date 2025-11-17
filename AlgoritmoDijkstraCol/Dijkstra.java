@@ -4,54 +4,66 @@ import java.util.*;
 
 public class Dijkstra {
 
-    Grafo mapa;
+    private Grafo g;
 
-    public Dijkstra(Grafo mapa) {
-        this.mapa = mapa;
+    public Dijkstra(Grafo g) {
+        this.g = g;
     }
 
-    // ======================================================
-    // ALGORITMO DIJKSTRA — Calcula la distancia más corta
-    // ======================================================
-    public Map<String, Double> dijkstra(String inicio) {
+    // =========================================================
+    // DIJKSTRA: distancias más cortas desde una ciudad origen
+    // =========================================================
+    public Map<String, Double> dijkstra(String origen) {
 
-        Map<String, Double> distancia = new HashMap<>();
-        Set<String> visitado = new HashSet<>();
+        Map<String, Double> dist = new HashMap<>();
+        Map<String, Boolean> visitado = new HashMap<>();
 
-        // Inicializar distancias
-        for (String ciudad : mapa.grafo.keySet()) {
-            distancia.put(ciudad, Double.MAX_VALUE);
+        for (String ciudad : g.grafo.keySet()) {
+            dist.put(ciudad, Double.MAX_VALUE);
+            visitado.put(ciudad, false);
         }
-        distancia.put(inicio, 0.0);
 
-        PriorityQueue<String> cola = new PriorityQueue<>(Comparator.comparingDouble(distancia::get));
+        dist.put(origen, 0.0);
 
-        cola.add(inicio);
+        // Repetimos por número de ciudades
+        for (int i = 0; i < g.grafo.size() - 1; i++) {
 
-        while (!cola.isEmpty()) {
+            String u = ciudadMinima(dist, visitado);
+            visitado.put(u, true);
 
-            String actual = cola.poll();
-            if (visitado.contains(actual))
-                continue;
-            visitado.add(actual);
+            for (Arista ar : g.grafo.get(u)) {
 
-            for (Grafo.Arista ar : mapa.grafo.get(actual)) {
+                if (!visitado.get(ar.destino) &&
+                        dist.get(u) + ar.peso < dist.get(ar.destino)) {
 
-                if (distancia.get(actual) + ar.peso < distancia.get(ar.destino)) {
-
-                    distancia.put(ar.destino, distancia.get(actual) + ar.peso);
-                    cola.add(ar.destino);
+                    dist.put(ar.destino, dist.get(u) + ar.peso);
                 }
             }
         }
-        return distancia;
+
+        return dist;
     }
 
-    // ======================================================
-    // DFS → Todas las rutas posibles
-    // ======================================================
+    private String ciudadMinima(Map<String, Double> dist, Map<String, Boolean> vis) {
+        double min = Double.MAX_VALUE;
+        String ciudad = null;
+
+        for (String c : dist.keySet()) {
+            if (!vis.get(c) && dist.get(c) <= min) {
+                min = dist.get(c);
+                ciudad = c;
+            }
+        }
+
+        return ciudad;
+    }
+
+    // =========================================================
+    // Encontrar TODAS las rutas posibles (DFS)
+    // =========================================================
     public void buscarRutas(String actual, String destino,
-            List<String> camino, List<List<String>> rutas) {
+            List<String> camino,
+            List<List<String>> rutas) {
 
         camino.add(actual);
 
@@ -61,7 +73,7 @@ public class Dijkstra {
             return;
         }
 
-        for (Grafo.Arista ar : mapa.grafo.get(actual)) {
+        for (Arista ar : g.grafo.get(actual)) {
             if (!camino.contains(ar.destino)) {
                 buscarRutas(ar.destino, destino, camino, rutas);
             }
@@ -70,39 +82,41 @@ public class Dijkstra {
         camino.remove(camino.size() - 1);
     }
 
-    // ======================================================
-    // Calcular distancia de UNA ruta
-    // ======================================================
+    // =========================================================
+    // Calcular distancia total de una ruta
+    // =========================================================
     public double calcularDistancia(List<String> ruta) {
+
         double total = 0;
 
         for (int i = 0; i < ruta.size() - 1; i++) {
             String a = ruta.get(i);
             String b = ruta.get(i + 1);
 
-            for (Grafo.Arista ar : mapa.grafo.get(a)) {
+            for (Arista ar : g.grafo.get(a)) {
                 if (ar.destino.equals(b)) {
                     total += ar.peso;
                 }
             }
         }
-
         return total;
     }
 
-    // ======================================================
-    // Ordenamiento burbuja de rutas por distancia
-    // ======================================================
+    // =========================================================
+    // ORDENAMIENTO BURBUJA para rutas
+    // =========================================================
     public void ordenarRutas(List<List<String>> rutas) {
 
         for (int i = 0; i < rutas.size() - 1; i++) {
             for (int j = 0; j < rutas.size() - 1 - i; j++) {
 
-                if (calcularDistancia(rutas.get(j)) > calcularDistancia(rutas.get(j + 1))) {
+                double d1 = calcularDistancia(rutas.get(j));
+                double d2 = calcularDistancia(rutas.get(j + 1));
 
-                    List<String> tmp = rutas.get(j);
+                if (d1 > d2) {
+                    List<String> temp = rutas.get(j);
                     rutas.set(j, rutas.get(j + 1));
-                    rutas.set(j + 1, tmp);
+                    rutas.set(j + 1, temp);
                 }
             }
         }
