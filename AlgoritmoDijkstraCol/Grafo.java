@@ -4,13 +4,18 @@ import java.util.*;
 
 public class Grafo {
 
-    Map<String, List<Arista>> grafo = new HashMap<>();
+    private Map<String, Map<String, Double>> adyacencia = new HashMap<>();
 
-    public void agregarCiudad(String nombre) {
-        grafo.put(nombre, new ArrayList<>());
+    public void agregarCiudad(String ciudad) {
+        adyacencia.putIfAbsent(ciudad, new HashMap<>());
     }
 
-    public void agregarArista(String origen, String destino, double peso) {
-        grafo.get(origen).add(new Arista(destino, peso));
+    public void agregarArista(String origen, String destino, double distancia) {
+        adyacencia.get(origen).put(destino, distancia);
+        adyacencia.get(destino).put(origen, distancia); // no dirigido
+    }
+
+    public Map<String, Map<String, Double>> getAdyacencia() {
+        return adyacencia;
     }
 }

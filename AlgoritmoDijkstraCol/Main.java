@@ -7,11 +7,10 @@ public class Main {
 
         Grafo g = new Grafo();
 
-        // Crear ciudades
+        // Crear ciudades (sin Pereira)
         String[] ciudades = {
                 "Cali", "Bogotá", "Medellín",
-                "Pereira", "Barranquilla",
-                "Bucaramanga", "Cartagena"
+                "Barranquilla", "Bucaramanga", "Cartagena"
         };
 
         for (String c : ciudades)
@@ -19,12 +18,10 @@ public class Main {
 
         // Agregar aristas reales simplificadas
         g.agregarArista("Cali", "Bogotá", 656);
-        g.agregarArista("Cali", "Medellín", 499);
-        g.agregarArista("Cali", "Pereira", 278.9);
+        g.agregarArista("Cali", "Medellín", 416);
 
         g.agregarArista("Bogotá", "Bucaramanga", 437.3);
 
-        g.agregarArista("Pereira", "Medellín", 196.1);
         g.agregarArista("Medellín", "Barranquilla", 404.2);
         g.agregarArista("Medellín", "Cartagena", 706.7);
 
@@ -35,7 +32,6 @@ public class Main {
 
         System.out.println("== DISTANCIAS DE DIJKSTRA DESDE CALI ==\n");
         Map<String, Double> dist = d.dijkstra("Cali");
-
         System.out.println(dist);
 
         // ===============================
